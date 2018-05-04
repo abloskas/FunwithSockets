@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>Sockets</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js</a>"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document). ready(function (){
+    
+            var socket = io(); //1
+            $('form').submit(function (e) {
+                e.preventDefault();
+                socket.emit('formsubmit', {
+                name: $('#name').val() ,
+                location: $('#location').val(),
+                language: $('#language').val(),
+                comment: $('#comment').val() 
+
+            });
+            $('#name').val('');
+            $('#location').val('');
+            $('#language').val('');
+            $('#comment').val('');
+            
+         });
+        socket.on('formsubmit', function (data) { 
+            var content = "";
+
+            for(var i=0; i<data.arr.length; i++){
+                content += "<p>"+"data submitted: " + data.arr[i].name +" "+ data.arr[i].location +" "+ data.arr[i].language +" "+ data.arr[i].comment +" "+ "and your random number is: " +data.num+ "</p>";
+            
+            }
+                $('#results').html(content);
+                console.log('this is working');
+        });
+
+            //  socket.on('random_num', function (data) { 
+            //      console.log('hello');
+
+            // });
+
+     });
+    </script>
+</head>
+<body>
+    <h1>Fun with sockets</h1> 
+    <div id="results"></div>
+    <div id="num"></div>
+    <form>
+        Your Name: <input type="text" name="name" id="name">
+        Dojo Location: <input type="text" name="location" id="location">
+        Favorite Language: <input type="text" name="language" id="language">
+        Comment (optional): <textarea name="comment" id="comment"></textarea>
+        <input type="submit" value="Submit">
+</form>
+</body>
+</html>
